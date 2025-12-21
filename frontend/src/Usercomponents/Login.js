@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login.css'
 import { NavLink } from 'react-router-dom';
+import Loader from '../component/Loader'; 
 const API = "https://pro-near-me-8.onrender.com";
 
 const Login = () => {
@@ -11,6 +12,7 @@ const Login = () => {
     const [email,setEmail] = useState();
     const [password,setpass] = useState();
     const [show , setshow] = useState(false);
+    const [loading,setloading]= useState(false);
 
     const changeye = (e) =>{
       e.preventDefault();
@@ -21,6 +23,7 @@ const Login = () => {
     const navigate = useNavigate();
     const handlesubmits = async (e) => {
       e.preventDefault();
+      setloading(true);
   
       try {
           const result = await axios.post(`${API}/login`, 
@@ -56,7 +59,9 @@ const Login = () => {
               console.log("Request error:", error.message);
               alert("Error: " + error.message);
           }
-      }
+      } finally {
+    setloading(false);
+  }
   };
   
     
@@ -98,14 +103,20 @@ const Login = () => {
           </button>
         </div>
 
-        <div className="form-group">
-          <button type="submit" className="login-btn">Login</button>
-        </div>
+      <div className="form-group">
+  <button
+    type="submit"
+    className="login-btn"
+    disabled={loading}
+  >
+    {loading ? <Loader /> : "Login"}
+  </button>
+</div>
+
 
         <div className="signup-redirect">
           <p>Don't have an account?</p>
           
-          {/* <button><NavLink to="/signup" className='signup-btn'  > Signup</NavLink></button> */}
           <a href='/signup' className='signup-btn'> Signup</a>
         </div>
       </form>

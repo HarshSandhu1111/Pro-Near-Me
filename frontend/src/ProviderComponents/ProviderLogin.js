@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import axios from "axios";
 import './ProviderSignup.css'; // reuse the same CSS
 import { useNavigate } from 'react-router-dom';
+import Loader from "../component/Loader";
 
 function ProviderLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading,setloading] = useState(false);
   const navigate = useNavigate();
   const API = "https://pro-near-me-8.onrender.com";
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    setloading(true);
     try {
       const result = await axios.post(
         `${API}/proffesionals/login`,
@@ -27,6 +29,8 @@ function ProviderLogin() {
     } catch (error) {
       console.error("Login error:", error);
       alert(error.response?.data?.message || "Login failed");
+    } finally{
+      setloading(false);
     }
   };
 
@@ -58,8 +62,10 @@ function ProviderLogin() {
           />
         </div>
 
-        <button type="submit">Login</button>
-      </form>
+   <button type="submit"
+        disabled={loading}>
+          {loading? <Loader/> : "LOGIN"}
+          </button>      </form>
     </div>
   );
 }

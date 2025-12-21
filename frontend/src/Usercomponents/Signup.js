@@ -2,6 +2,9 @@ import './Signup.css';
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+  
+  import Loader from '../component/Loader';
+
 
 function Signup() {
   const [name, setName] = useState("");
@@ -10,11 +13,12 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [city, setCity] = useState("");
   const navigate = useNavigate();
+  const [loading,setloading]=useState(false);
   const API = "https://pro-near-me-8.onrender.com";
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setloading(true);
     try {
       const res = await axios.post(
         `${API}/signup`,
@@ -28,6 +32,9 @@ function Signup() {
     } catch (error) {
       console.error("Signup Error:", error);
       alert(error.response?.data || "Signup failed");
+    }
+    finally{
+      setloading(false);
     }
   };
 
@@ -101,8 +108,10 @@ function Signup() {
           />
         </div>
 
-        <button type="submit">Submit</button>
-        <button type="button" onClick={navigation}>Signup as a Service Provider</button>
+        <button className='sub-btn' type="submit" disabled={loading} >
+        {loading? <Loader/> : "SIGNUP"}
+        </button>
+        <button className='sign-p' type="button" onClick={navigation}>Signup as a Service Provider</button>
       </form>
     </div>
   );
