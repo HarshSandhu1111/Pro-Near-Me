@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './Getproviders.css';  
-
+import Loader_m from '../component/Loader_m';
 const Getproviders = () => {
   const location = useLocation();
   const { city, serviceType } = location.state || {};
@@ -11,6 +11,7 @@ const Getproviders = () => {
   const [selectedProvider, setSelectedProvider] = useState(null);
   const [date,setdate] = useState("");
   const [time,settime] = useState("");
+  const[loading,setloading] = useState(false);
   const [avail,setavail] = useState(false);
   console.log(date,time);
   console.log(avail);
@@ -76,6 +77,7 @@ const addbooking = async()=>{
 
   useEffect(() => {
     const handlefunction = async () => {
+      setloading(true);
       try {
         const token = localStorage.getItem("userToken");
         const response = await axios.post(
@@ -93,6 +95,8 @@ const addbooking = async()=>{
         
       } catch (error) {
         console.error("Error fetching providers:", error);
+      }finally{
+        setloading(false);
       }
     };
 
@@ -101,13 +105,15 @@ const addbooking = async()=>{
 
   return (
     <div className="gpmain">
-      
+    
       <h2 className="heading">Service Providers in {city} for {serviceType}</h2>
+      
+      { loading ? <Loader_m/> :  
       <div className="provider-list">
         {providers.length > 0 ? (
           providers.map((provider, index) => (
             <div className="provider-card" key={index} onClick={()=> booking(provider)}>
-              <h3>{provider.name}</h3>
+              <h2>{provider.name}</h2>
               <p><strong>Profession:</strong> {provider.serviceType}</p>
               <p><strong>Email:</strong> {provider.email}</p>
               <p><strong>city:</strong> {provider.city}</p>
@@ -119,6 +125,8 @@ const addbooking = async()=>{
           <p className="no-results">No providers found.</p>
         )}
       </div>
+}
+
 
       {show && selectedProvider && (
   <div className="modal-overlay" onClick={()=> setshow(false)}>
@@ -150,6 +158,7 @@ const addbooking = async()=>{
 
 
     </div>
+
   );
 };
 

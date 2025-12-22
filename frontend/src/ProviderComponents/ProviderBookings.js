@@ -3,6 +3,7 @@ import axios from 'axios';
 import './ProviderBookings.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Loader_m from '../component/Loader_m';
 
 const ProviderBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -10,6 +11,7 @@ const ProviderBookings = () => {
   const API = "https://pro-near-me-8.onrender.com";
 
   const fetchProviderBookings = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem("ProviderToken");
       const response = await axios.get(
@@ -24,6 +26,8 @@ const ProviderBookings = () => {
       setBookings(response.data);
     } catch (error) {
       console.error("Error fetching provider bookings:", error);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -66,10 +70,11 @@ console.log(res);
   };
 
   return (
+      loading? <Loader_m/>:
     <div>
       <ToastContainer position="top-right" autoClose={3000} />
 
-      {bookings.map((booking, index) => (
+      {bookings.length===0?<h1>NO BOOKINGS</h1> :  bookings.map((booking, index) => (
         <div className="allbookings" key={index}>
           <div className="booking-header">
             <p>Date: <span>{booking.date}</span></p>

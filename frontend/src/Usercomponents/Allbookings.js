@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import './Allbooking.css';
-
+import Loader_m from '../component/Loader_m'
 
 const Allbookings = () => {
     const[data,setdata]= useState([]);
+    const [loading,setloading] = useState(false);
   const API = "https://pro-near-me-8.onrender.com";
 
     const Bookings = async()=>{
+      setloading(true);
         try {
         const token = localStorage.getItem("userToken");
         const response = await axios.get(
@@ -23,6 +25,8 @@ const Allbookings = () => {
         setdata(response.data);
       } catch (error) {
         console.error("Error fetching providers:", error);
+      }finally{
+        setloading(false);
       }
     };
     useEffect(()=>{
@@ -33,7 +37,7 @@ const Allbookings = () => {
 
   return (
     <div>
-   { data.length>0 ? (data.map((booking, indx) => (
+   { loading ?<Loader_m/> :  data.length>0 ? (data.map((booking, indx) => (
   <div className="allbookings" key={indx}>
     <div className="booking-header">
       <p>Date: <span>{booking.date}</span></p>

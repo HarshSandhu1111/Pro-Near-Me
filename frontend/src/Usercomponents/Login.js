@@ -117,7 +117,9 @@ const Login = () => {
         <div className="signup-redirect">
           <p>Don't have an account?</p>
           
-          <a href='/signup' className='signup-btn'> Signup</a>
+          <a href='/signup' className='signup-btn' disabled={loading}> Signup</a>
+           <div style={{marginTop:10}}><a href='/provider/login' className='signup-btn' disabled={loading}> Login as Provider</a>
+</div>
         </div>
       </form>
     </div>

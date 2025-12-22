@@ -33,7 +33,7 @@ console.log(name,city);
             <i className="fa-solid fa-calendar-check"></i>
             <p >My Bookings</p>
           </div>
-          <div className="nav-comp clickable" onClick={() => navigate('/provider/availability')}>
+          <div className="nav-comp clickable" >
             <i className="fa-solid fa-clock"></i>
             <p>My Availability</p>
           </div>
@@ -94,7 +94,7 @@ console.log(name,city);
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="cta-button"
-            onClick={() => navigate('/provider/availability')}
+
           >
             Set Your Availability
           </motion.button>

@@ -25,7 +25,12 @@ function ProviderLogin() {
               localStorage.setItem("LoggedInProvider", result.data._id); //it is provider id
               console.log("Token Saved:", localStorage.getItem("ProviderToken"));
       console.log(result.data);
-      navigate("/provider/main",{ state: { name: result.data.name ,city: result.data.city} }); // adjust route as needed
+      if(result.data.name){
+      navigate("/provider/main",{ state: { name: result.data.name ,city: result.data.city} });
+      } // adjust route as needed
+      else{
+        alert("INCORRECT CREDENTIALS")
+      }
     } catch (error) {
       console.error("Login error:", error);
       alert(error.response?.data?.message || "Login failed");
